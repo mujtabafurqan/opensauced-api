@@ -5,6 +5,20 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.16.0](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.15.0...v2.16.0) (2024-03-28)
+
+
+### 🐛 Bug Fixes
+
+* Adds checks for optional base-histo dto fields ([#683](https://github.com/open-sauced/api.opensauced.pizza/issues/683)) ([3e12381](https://github.com/open-sauced/api.opensauced.pizza/commit/3e12381630c0a7bf8f69ac7bf4653aaee772207e))
+
+
+### 🍕 Features
+
+* Adds fork velocity to repos entity ([#685](https://github.com/open-sauced/api.opensauced.pizza/issues/685)) ([7fe9185](https://github.com/open-sauced/api.opensauced.pizza/commit/7fe918508ee40058bf3a06b2bfb435cf2e58473a))
+* Full histogram features ([#681](https://github.com/open-sauced/api.opensauced.pizza/issues/681)) ([895231b](https://github.com/open-sauced/api.opensauced.pizza/commit/895231b1dd6b066c88c41dd739e59f86199a847e))
+* Repo entity last push dates ([#684](https://github.com/open-sauced/api.opensauced.pizza/issues/684)) ([6af1e99](https://github.com/open-sauced/api.opensauced.pizza/commit/6af1e99aea041816c20b017c9c59e34c5f06148f))
+
 ## [2.16.0-beta.4](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0-beta.3...v2.16.0-beta.4) (2024-03-28)
 
 
