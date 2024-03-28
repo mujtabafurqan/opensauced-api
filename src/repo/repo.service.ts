@@ -15,6 +15,7 @@ import { PullRequestGithubEventsService } from "../timescale/pull_request_github
 import { RepoDevstatsService } from "../timescale/repo-devstats.service";
 import { UserService } from "../user/services/user.service";
 import { ForkGithubEventsService } from "../timescale/fork_github_events.service";
+import { PushGithubEventsService } from "../timescale/push_github_events.service";
 import { RepoOrderFieldsEnum, RepoPageOptionsDto } from "./dtos/repo-page-options.dto";
 import { DbRepo } from "./entities/repo.entity";
 import { RepoSearchOptionsDto } from "./dtos/repo-search-options.dto";
@@ -28,6 +29,7 @@ export class RepoService {
     @Inject(forwardRef(() => PullRequestGithubEventsService))
     private pullRequestGithubEventsService: PullRequestGithubEventsService,
     private forkGithubEventsService: ForkGithubEventsService,
+    private pushGithubEventsService: PushGithubEventsService,
     private repoDevstatsService: RepoDevstatsService,
     private configService: ConfigService,
     private userService: UserService
@@ -189,6 +191,7 @@ export class RepoService {
       const forksVelocity = forksHisto.reduce((acc, curr) => acc + curr.forks_count, 0) / range;
       const activityRatio = await this.repoDevstatsService.calculateRepoActivityRatio(entity.full_name, range);
       const confidence = await this.repoDevstatsService.calculateContributorConfidence(entity.full_name, range);
+      const pushDates = await this.pushGithubEventsService.lastPushDatesForRepo(entity.full_name);
 
       return {
         ...entity,
@@ -203,6 +206,8 @@ export class RepoService {
         activity_ratio: activityRatio,
         contributor_confidence: confidence,
         health: activityRatio,
+        last_pushed_at: pushDates.push_date,
+        last_main_pushed_at: pushDates.main_push_date,
       } as DbRepo;
     });
 
