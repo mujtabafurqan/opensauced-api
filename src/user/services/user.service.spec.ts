@@ -7,6 +7,7 @@ import { ObjectLiteral, Repository } from "typeorm";
 import { ConfigService } from "@nestjs/config";
 
 import { User } from "@supabase/supabase-js";
+import { DbForkGitHubEventsHistogram } from "../../timescale/entities/fork_github_events_histogram.entity";
 import { userNotificationTypes } from "../entities/user-notification.constants";
 import { DbUser } from "../user.entity";
 import { DbUserHighlightReaction } from "../entities/user-highlight-reaction.entity";
@@ -15,7 +16,7 @@ import { DbInsight } from "../../insight/entities/insight.entity";
 import { DbUserCollaboration } from "../entities/user-collaboration.entity";
 import { DbUserList } from "../../user-lists/entities/user-list.entity";
 import { PullRequestGithubEventsService } from "../../timescale/pull_request_github_events.service";
-import { DbPullRequestGitHubEvents } from "../../timescale/entities/pull_request_github_event";
+import { DbPullRequestGitHubEvents } from "../../timescale/entities/pull_request_github_event.entity";
 import { RepoService } from "../../repo/repo.service";
 import { UserListService } from "../../user-lists/user-list.service";
 import { DbRepo } from "../../repo/entities/repo.entity";
@@ -23,16 +24,19 @@ import { RepoFilterService } from "../../common/filters/repo-filter.service";
 import { DbUserListContributor } from "../../user-lists/entities/user-list-contributor.entity";
 import { PagerService } from "../../common/services/pager.service";
 import { RepoDevstatsService } from "../../timescale/repo-devstats.service";
-import { DbIssuesGitHubEvents } from "../../timescale/entities/issues_github_event";
-import { DbPushGitHubEvents } from "../../timescale/entities/push_github_events";
+import { DbIssuesGitHubEvents } from "../../timescale/entities/issues_github_event.entity";
+import { DbPushGitHubEvents } from "../../timescale/entities/push_github_events.entity";
 import { DbWorkspace } from "../../workspace/entities/workspace.entity";
 import { DbWorkspaceMember } from "../../workspace/entities/workspace-member.entity";
 import { DbWorkspaceUserLists } from "../../workspace/entities/workspace-user-list.entity";
 import { WorkspaceService } from "../../workspace/workspace.service";
 import { DbWorkspaceRepo } from "../../workspace/entities/workspace-repos.entity";
 import { DbWorkspaceContributor } from "../../workspace/entities/workspace-contributors.entity";
-import { DbWatchGitHubEvents } from "../../timescale/entities/watch_github_events";
-import { DbForkGitHubEvents } from "../../timescale/entities/fork_github_events";
+import { DbWatchGitHubEvents } from "../../timescale/entities/watch_github_events.entity";
+import { DbForkGitHubEvents } from "../../timescale/entities/fork_github_events.entity";
+import { ForkGithubEventsService } from "../../timescale/fork_github_events.service";
+import { PushGithubEventsService } from "../../timescale/push_github_events.service";
+import { DbPushGitHubEventsHistogram } from "../../timescale/entities/push_github_events_histogram.entity";
 import { UserService } from "./user.service";
 
 type MockRepository<T extends ObjectLiteral = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
@@ -57,7 +61,9 @@ describe("UserService", () => {
       providers: [
         UserService,
         ConfigService,
+        ForkGithubEventsService,
         PullRequestGithubEventsService,
+        PushGithubEventsService,
         RepoDevstatsService,
         RepoService,
         UserListService,
@@ -110,6 +116,14 @@ describe("UserService", () => {
         },
         {
           provide: getRepositoryToken(DbForkGitHubEvents, "TimescaleConnection"),
+          useValue: createMockRepository(),
+        },
+        {
+          provide: getRepositoryToken(DbForkGitHubEventsHistogram, "TimescaleConnection"),
+          useValue: createMockRepository(),
+        },
+        {
+          provide: getRepositoryToken(DbPushGitHubEventsHistogram, "TimescaleConnection"),
           useValue: createMockRepository(),
         },
         {

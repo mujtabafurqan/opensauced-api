@@ -1,11 +1,10 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsEnum, IsIn, IsInt, IsOptional, IsString } from "class-validator";
-import { InsightFilterFieldsEnum } from "../../insight/dtos/insight-options.dto";
 import { OrderDirectionEnum } from "../../common/constants/order-direction.constant";
 
 export class BaseHistogramDto {
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: "Range in days",
     default: 30,
     type: "integer",
@@ -13,8 +12,7 @@ export class BaseHistogramDto {
   @Type(() => Number)
   @IsIn([7, 30, 90])
   @IsInt()
-  @IsOptional()
-  readonly range?: number = 30;
+  readonly range: number = 30;
 
   @ApiPropertyOptional({
     description: "Number of days in the past to start range block",
@@ -45,7 +43,7 @@ export class BaseHistogramDto {
   @Type(() => String)
   @IsString()
   @IsOptional()
-  repo?: string;
+  readonly repo?: string;
 
   @ApiPropertyOptional({
     type: "string",
@@ -64,20 +62,4 @@ export class BaseHistogramDto {
   @IsEnum(OrderDirectionEnum)
   @IsOptional()
   readonly orderDirection?: OrderDirectionEnum = OrderDirectionEnum.DESC;
-
-  @ApiPropertyOptional({
-    enum: InsightFilterFieldsEnum,
-    enumName: "InsightFilterFieldsEnum",
-  })
-  @IsEnum(InsightFilterFieldsEnum)
-  @IsOptional()
-  readonly filter?: InsightFilterFieldsEnum;
-
-  @ApiPropertyOptional({
-    type: "string",
-    default: "",
-  })
-  @IsString()
-  @IsOptional()
-  readonly topic?: string;
 }
