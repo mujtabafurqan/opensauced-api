@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.16.0-beta.4](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0-beta.3...v2.16.0-beta.4) (2024-03-28)
+
+
+### 🍕 Features
+
+* Repo entity last push dates ([#684](https://github.com/open-sauced/api.opensauced.pizza/issues/684)) ([6af1e99](https://github.com/open-sauced/api.opensauced.pizza/commit/6af1e99aea041816c20b017c9c59e34c5f06148f))
+
 ## [2.16.0-beta.3](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0-beta.2...v2.16.0-beta.3) (2024-03-28)
 
 
