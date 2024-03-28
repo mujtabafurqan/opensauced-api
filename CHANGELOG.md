@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.16.0-beta.3](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0-beta.2...v2.16.0-beta.3) (2024-03-28)
+
+
+### 🍕 Features
+
+* Adds fork velocity to repos entity ([#685](https://github.com/open-sauced/api.opensauced.pizza/issues/685)) ([7fe9185](https://github.com/open-sauced/api.opensauced.pizza/commit/7fe918508ee40058bf3a06b2bfb435cf2e58473a))
+
 ## [2.16.0-beta.2](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0-beta.1...v2.16.0-beta.2) (2024-03-27)
 
 
