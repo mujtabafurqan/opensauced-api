@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+### [2.16.1-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0...v2.16.1-beta.1) (2024-03-29)
+
+
+### 🐛 Bug Fixes
+
+* Make "is_public" in insights dto optional ([#691](https://github.com/open-sauced/api.opensauced.pizza/issues/691)) ([fb81c17](https://github.com/open-sauced/api.opensauced.pizza/commit/fb81c173592b17ca49975f11b2b0fd4fa14be2b3))
+
 ## [2.16.0](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.15.0...v2.16.0) (2024-03-28)
 
 
