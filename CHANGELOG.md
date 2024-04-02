@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.17.0-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.1-beta.1...v2.17.0-beta.1) (2024-04-02)
+
+
+### 🍕 Features
+
+* Add v2/workspaces/:id/repo/prs endpoint for workspace repo PRs ([#692](https://github.com/open-sauced/api.opensauced.pizza/issues/692)) ([b634732](https://github.com/open-sauced/api.opensauced.pizza/commit/b634732b5744ec9c8dd58fac8ff86534c4e08d0e))
+
 ### [2.16.1-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0...v2.16.1-beta.1) (2024-03-29)
 
 
