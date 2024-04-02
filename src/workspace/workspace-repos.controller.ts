@@ -20,11 +20,13 @@ import { SupabaseGuard } from "../auth/supabase.guard";
 import { ApiPaginatedResponse } from "../common/decorators/api-paginated-response.decorator";
 import { DbRepo } from "../repo/entities/repo.entity";
 import { RepoSearchOptionsDto } from "../repo/dtos/repo-search-options.dto";
+import { DbPullRequestGitHubEvents } from "../timescale/entities/pull_request_github_event.entity";
 import { WorkspaceReposService } from "./workspace-repos.service";
 import { DbWorkspaceRepo } from "./entities/workspace-repos.entity";
 import { UpdateWorkspaceReposDto } from "./dtos/update-workspace-repos.dto";
 import { DbWorkspace } from "./entities/workspace.entity";
 import { DeleteWorkspaceReposDto } from "./dtos/delete-workspace-repos.dto";
+import { WorkspaceRepoPullRequestPageOptionsDto } from "./dtos/workspace-repo-prs.dto";
 
 @Controller("workspaces/:id/repos")
 @ApiTags("Workspace repos service")
@@ -47,6 +49,24 @@ export class WorkspaceRepoController {
     @Query() pageOptionsDto: PageOptionsDto
   ): Promise<PageDto<DbWorkspaceRepo>> {
     return this.workspaceRepoService.findAllReposByWorkspaceIdForUserId(pageOptionsDto, id, userId);
+  }
+
+  @Get("/prs")
+  @ApiOperation({
+    operationId: "getWorkspaceRepoPrsForUser",
+    summary: "Gets workspace repo PRs for the authenticated user",
+  })
+  @ApiBearerAuth()
+  @UseGuards(PassthroughSupabaseGuard)
+  @ApiOkResponse({ type: DbPullRequestGitHubEvents })
+  @ApiNotFoundResponse({ description: "Unable to get user workspace repo prs" })
+  @ApiBadRequestResponse({ description: "Invalid request" })
+  async getWorkspaceRepoPrsForUser(
+    @Param("id") id: string,
+    @OptionalUserId() userId: number | undefined,
+    @Query() pageOptionsDto: WorkspaceRepoPullRequestPageOptionsDto
+  ): Promise<PageDto<DbPullRequestGitHubEvents>> {
+    return this.workspaceRepoService.findAllRepoPrsByWorkspaceIdForUserId(pageOptionsDto, id, userId);
   }
 
   @Get("/search")
