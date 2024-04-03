@@ -140,6 +140,10 @@ export class RepoService {
     const prevDaysStartDate = pageOptionsDto.prev_days_start_date!;
     const range = pageOptionsDto.range!;
 
+    if (range === 180 || range === 360) {
+      throw new BadRequestException("ranges of 180 and 360 days not supported");
+    }
+
     const queryBuilder = this.baseFilterQueryBuilder().withDeleted().addSelect("repos.deleted_at");
 
     const filters = this.filterService.getRepoFilters(pageOptionsDto);

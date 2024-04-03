@@ -9,7 +9,7 @@ export class WorkspaceStatsOptionsDto {
     type: "integer",
   })
   @Type(() => Number)
-  @IsIn([7, 30, 90])
+  @IsIn([7, 30, 90, 180, 360])
   @IsInt()
   @IsOptional()
   readonly range?: number = 30;
@@ -20,7 +20,7 @@ export class WorkspaceStatsOptionsDto {
     type: "integer",
   })
   @Type(() => Number)
-  @IsIn([0, 7, 30, 90])
+  @IsIn([0, 7, 30, 90, 180])
   @IsInt()
   @IsOptional()
   readonly prev_days_start_date?: number = 0;
