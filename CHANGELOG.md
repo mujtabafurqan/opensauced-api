@@ -5,6 +5,22 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.17.0](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0...v2.17.0) (2024-04-03)
+
+
+### 🐛 Bug Fixes
+
+* Make "is_public" in insights dto optional ([#691](https://github.com/open-sauced/api.opensauced.pizza/issues/691)) ([fb81c17](https://github.com/open-sauced/api.opensauced.pizza/commit/fb81c173592b17ca49975f11b2b0fd4fa14be2b3))
+
+
+### 🍕 Features
+
+* Add v2/workspaces/:id/repo/prs endpoint for workspace repo PRs ([#692](https://github.com/open-sauced/api.opensauced.pizza/issues/692)) ([b634732](https://github.com/open-sauced/api.opensauced.pizza/commit/b634732b5744ec9c8dd58fac8ff86534c4e08d0e))
+* Allow for 180/360 days in repo search ([#708](https://github.com/open-sauced/api.opensauced.pizza/issues/708)) ([3d9db39](https://github.com/open-sauced/api.opensauced.pizza/commit/3d9db3973eb4c6b7ae3d99101c53e4a3adbe3892))
+* Email validation regexes and disallow opensauced email update ([#697](https://github.com/open-sauced/api.opensauced.pizza/issues/697)) ([54c1ae9](https://github.com/open-sauced/api.opensauced.pizza/commit/54c1ae9b51c8c9dc8510b0a3c241f385df0f91c1))
+* Support 6 month and 1 year ranges ([#701](https://github.com/open-sauced/api.opensauced.pizza/issues/701)) ([422b44c](https://github.com/open-sauced/api.opensauced.pizza/commit/422b44c687a4905bfe067cbe768f85f1c2c44611))
+* Try and stub repo on v2/repos/org/name ([#699](https://github.com/open-sauced/api.opensauced.pizza/issues/699)) ([dd97e79](https://github.com/open-sauced/api.opensauced.pizza/commit/dd97e79befb9fb6717300dce03422b7c610eb006))
+
 ## [2.17.0-beta.3](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0-beta.2...v2.17.0-beta.3) (2024-04-03)
 
 
