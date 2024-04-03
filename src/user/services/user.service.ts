@@ -5,6 +5,7 @@ import { User } from "@supabase/supabase-js";
 
 import { Octokit } from "@octokit/rest";
 import { ConfigService } from "@nestjs/config";
+import { opensaucedEmailRegex, validEmailRegex } from "../../common/util/email";
 import { PullRequestGithubEventsService } from "../../timescale/pull_request_github_events.service";
 import { DbUser } from "../user.entity";
 import { UpdateUserDto } from "../dtos/update-user.dto";
@@ -360,6 +361,10 @@ export class UserService {
 
   async updateUser(id: number, user: UpdateUserDto) {
     try {
+      if (!validEmailRegex.test(user.email) || opensaucedEmailRegex.test(user.email)) {
+        throw new BadRequestException("user provided email is not valid");
+      }
+
       await this.findOneById(id);
 
       await this.userRepository.update(id, {
@@ -379,6 +384,10 @@ export class UserService {
 
       return this.findOneById(id);
     } catch (e) {
+      if (e instanceof Error) {
+        throw e;
+      }
+
       throw new NotFoundException("Unable to update user");
     }
   }
