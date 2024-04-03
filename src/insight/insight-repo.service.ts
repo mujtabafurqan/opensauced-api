@@ -51,7 +51,7 @@ export class InsightRepoService {
       [org, name] = parts;
     }
 
-    const repo = await this.repoService.tryFindRepoOrMakeStub(repoInfo.id, org, name);
+    const repo = await this.repoService.tryFindRepoOrMakeStub({ repoId: repoInfo.id, repoOwner: org, repoName: name });
 
     return this.insightRepoRepository.save({
       insight_id: insightId,

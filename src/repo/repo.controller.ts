@@ -37,7 +37,7 @@ export class RepoController {
   @ApiNotFoundResponse({ description: "Repository not found" })
   @Header("Cache-Control", "public, max-age=600")
   async findOneByOwnerAndRepo(@Param("owner") owner: string, @Param("repo") repo: string): Promise<DbRepo> {
-    return this.repoService.findOneByOwnerAndRepo(owner, repo);
+    return this.repoService.tryFindRepoOrMakeStub({ repoOwner: owner, repoName: repo });
   }
 
   @Get("/:owner/:repo/contributors")

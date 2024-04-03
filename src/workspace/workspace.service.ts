@@ -182,7 +182,7 @@ export class WorkspaceService {
           throw new NotFoundException("invalid repo input: must be of form 'owner/name'");
         }
 
-        const repo = await this.repoService.tryFindRepoOrMakeStub(undefined, parts[0], parts[1]);
+        const repo = await this.repoService.tryFindRepoOrMakeStub({ repoOwner: parts[0], repoName: parts[1] });
         const existingWorkspaceRepo = await this.workspaceRepoRepository.findOne({
           where: {
             workspace_id: savedWorkspace.id,

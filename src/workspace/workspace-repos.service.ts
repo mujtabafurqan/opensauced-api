@@ -189,7 +189,7 @@ export class WorkspaceReposService {
   }
 
   private async executeAddWorkspaceRepo(workspace: DbWorkspace, ownerName: string, repoName: string) {
-    const repo = await this.repoService.tryFindRepoOrMakeStub(undefined, ownerName, repoName);
+    const repo = await this.repoService.tryFindRepoOrMakeStub({ repoOwner: ownerName, repoName });
 
     const existingWorkspaceRepo = await this.workspaceRepoRepository.findOne({
       where: {

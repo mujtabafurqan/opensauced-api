@@ -286,7 +286,15 @@ export class RepoService {
     return new PageDto(entities, pageMetaDto);
   }
 
-  async tryFindRepoOrMakeStub(repoId?: number, repoOwner?: string, repoName?: string): Promise<DbRepo> {
+  async tryFindRepoOrMakeStub({
+    repoId,
+    repoOwner,
+    repoName,
+  }: {
+    repoId?: number;
+    repoOwner?: string;
+    repoName?: string;
+  }): Promise<DbRepo> {
     if (!repoId && (!repoOwner || !repoName)) {
       throw new BadRequestException("must provide repo ID or repo owner/name");
     }
