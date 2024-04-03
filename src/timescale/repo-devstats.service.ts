@@ -225,8 +225,13 @@ export class RepoDevstatsService {
    * used to determine how likely "fly by" contributors who've contributed meaningfully elsewhere
    * within a given time range, are to contribute meaningfully back to the project in question
    *
+   * it is assumed that ranges past 90 days are generally "low confidence". I.e., someone who forked
+   * a repo half a year ago likely isn't a good indicator of them making a meaningful
+   * contribution today.
+   *
    * Currently the algorithm exists as:
    * --------------------------------------------------------------------------
+   * Truncate range down to max 90 days
    *
    * For all stargazers over the time range:
    *   Check if those users have more than one contribution to 2 or more projects:
@@ -241,6 +246,8 @@ export class RepoDevstatsService {
    *     = confidence score as a percentage
    */
   async calculateContributorConfidence(repoName: string, range: number): Promise<number> {
+    range = range > 90 ? 90 : range;
+
     const forkerConfidence = await this.calculateForkerConfidence(repoName, range);
     const starGazerConfidence = await this.calculateStarGazerConfidence(repoName, range);
 
@@ -267,6 +274,10 @@ export class RepoDevstatsService {
 
     const repoName = `${owner}/${repo}`.toLowerCase();
     const range = pageOptionsDto.range!;
+
+    if (range === 180 || range === 360) {
+      throw new BadRequestException("ranges of 180 and 360 days not supported");
+    }
 
     const usersQuery = this.pullRequestGithubEventsRepository.manager
       .createQueryBuilder()

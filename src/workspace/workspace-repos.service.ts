@@ -8,12 +8,15 @@ import { PageOptionsDto } from "../common/dtos/page-options.dto";
 import { RepoService } from "../repo/repo.service";
 import { DbRepo } from "../repo/entities/repo.entity";
 import { RepoSearchOptionsDto } from "../repo/dtos/repo-search-options.dto";
+import { PullRequestGithubEventsService } from "../timescale/pull_request_github_events.service";
+import { DbPullRequestGitHubEvents } from "../timescale/entities/pull_request_github_event.entity";
 import { DbWorkspaceRepo } from "./entities/workspace-repos.entity";
 import { DbWorkspace } from "./entities/workspace.entity";
 import { WorkspaceService } from "./workspace.service";
 import { canUserEditWorkspace, canUserViewWorkspace } from "./common/memberAccess";
 import { UpdateWorkspaceReposDto } from "./dtos/update-workspace-repos.dto";
 import { DeleteWorkspaceReposDto } from "./dtos/delete-workspace-repos.dto";
+import { WorkspaceRepoPullRequestPageOptionsDto } from "./dtos/workspace-repo-prs.dto";
 
 @Injectable()
 export class WorkspaceReposService {
@@ -21,7 +24,8 @@ export class WorkspaceReposService {
     @InjectRepository(DbWorkspaceRepo, "ApiConnection")
     private workspaceRepoRepository: Repository<DbWorkspaceRepo>,
     private workspaceService: WorkspaceService,
-    private repoService: RepoService
+    private repoService: RepoService,
+    private pullRequestGithubEventsService: PullRequestGithubEventsService
   ) {}
 
   baseQueryBuilder(): SelectQueryBuilder<DbWorkspaceRepo> {
@@ -67,6 +71,56 @@ export class WorkspaceReposService {
     const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
 
     return new PageDto(entities, pageMetaDto);
+  }
+
+  async findAllRepoPrsByWorkspaceIdForUserId(
+    pageOptionsDto: WorkspaceRepoPullRequestPageOptionsDto,
+    id: string,
+    userId: number | undefined
+  ): Promise<PageDto<DbPullRequestGitHubEvents>> {
+    const workspace = await this.workspaceService.findOneById(id);
+
+    /*
+     * viewers, editors, and owners can see what repos belongs to a workspace
+     */
+
+    const canView = canUserViewWorkspace(workspace, userId);
+
+    if (!canView) {
+      throw new NotFoundException();
+    }
+
+    const queryBuilder = this.baseQueryBuilder();
+
+    queryBuilder
+      .withDeleted()
+      .leftJoinAndSelect(
+        "workspace_repos.repo",
+        "workspace_repos_repo",
+        "workspace_repos.repo_id = workspace_repos_repo.id"
+      )
+      .where("workspace_repos.deleted_at IS NULL")
+      .andWhere("workspace_repos.workspace_id = :id", { id });
+
+    if (pageOptionsDto.filterOutRepoIds) {
+      queryBuilder.andWhere("workspace_repos_repo.id NOT IN (:...repoIds)", {
+        repoIds: pageOptionsDto.filterOutRepoIds.split(","),
+      });
+    }
+
+    const entities = await queryBuilder.getMany();
+
+    if (entities.length === 0) {
+      const pageMeta = new PageMetaDto({ itemCount: 0, pageOptionsDto });
+
+      return new PageDto([], pageMeta);
+    }
+
+    return this.pullRequestGithubEventsService.findAllWithFilters({
+      ...pageOptionsDto,
+      skip: pageOptionsDto.skip,
+      repoIds: entities.map((entity) => entity.repo_id.toString()).join(","),
+    });
   }
 
   async findAllReposByFilterInWorkspace(
@@ -135,7 +189,7 @@ export class WorkspaceReposService {
   }
 
   private async executeAddWorkspaceRepo(workspace: DbWorkspace, ownerName: string, repoName: string) {
-    const repo = await this.repoService.tryFindRepoOrMakeStub(undefined, ownerName, repoName);
+    const repo = await this.repoService.tryFindRepoOrMakeStub({ repoOwner: ownerName, repoName });
 
     const existingWorkspaceRepo = await this.workspaceRepoRepository.findOne({
       where: {

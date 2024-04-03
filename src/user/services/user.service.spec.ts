@@ -387,7 +387,7 @@ describe("UserService", () => {
     const user = {
       id: userId,
       name: faker.person.firstName(),
-      email: "",
+      email: "test@testing.com",
       bio: "",
       url: "",
       twitter_username: "",

@@ -140,6 +140,10 @@ export class RepoService {
     const prevDaysStartDate = pageOptionsDto.prev_days_start_date!;
     const range = pageOptionsDto.range!;
 
+    if ((range === 180 || range === 360) && !pageOptionsDto.repoIds && !pageOptionsDto.repo) {
+      throw new BadRequestException("ranges of 180 and 360 days not supported without repo ID or repo name");
+    }
+
     const queryBuilder = this.baseFilterQueryBuilder().withDeleted().addSelect("repos.deleted_at");
 
     const filters = this.filterService.getRepoFilters(pageOptionsDto);
@@ -282,7 +286,15 @@ export class RepoService {
     return new PageDto(entities, pageMetaDto);
   }
 
-  async tryFindRepoOrMakeStub(repoId?: number, repoOwner?: string, repoName?: string): Promise<DbRepo> {
+  async tryFindRepoOrMakeStub({
+    repoId,
+    repoOwner,
+    repoName,
+  }: {
+    repoId?: number;
+    repoOwner?: string;
+    repoName?: string;
+  }): Promise<DbRepo> {
     if (!repoId && (!repoOwner || !repoName)) {
       throw new BadRequestException("must provide repo ID or repo owner/name");
     }
