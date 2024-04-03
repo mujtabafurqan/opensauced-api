@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.17.0-beta.2](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0-beta.1...v2.17.0-beta.2) (2024-04-03)
+
+
+### 🍕 Features
+
+* Support 6 month and 1 year ranges ([#701](https://github.com/open-sauced/api.opensauced.pizza/issues/701)) ([422b44c](https://github.com/open-sauced/api.opensauced.pizza/commit/422b44c687a4905bfe067cbe768f85f1c2c44611))
+
 ## [2.17.0-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.1-beta.1...v2.17.0-beta.1) (2024-04-02)
 
 
