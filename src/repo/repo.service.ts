@@ -18,7 +18,9 @@ import { ForkGithubEventsService } from "../timescale/fork_github_events.service
 import { PushGithubEventsService } from "../timescale/push_github_events.service";
 import { RepoOrderFieldsEnum, RepoPageOptionsDto } from "./dtos/repo-page-options.dto";
 import { DbRepo } from "./entities/repo.entity";
-import { RepoSearchOptionsDto } from "./dtos/repo-search-options.dto";
+import { RepoRangeOptionsDto, RepoSearchOptionsDto } from "./dtos/repo-search-options.dto";
+import { DbLotteryFactor } from "./entities/lotto.entity";
+import { calculateLottoFactor } from "./common/lotto";
 
 @Injectable()
 export class RepoService {
@@ -218,6 +220,16 @@ export class RepoService {
     const updatedEntities = await Promise.all(promises);
 
     return new PageDto(updatedEntities, pageMetaDto);
+  }
+
+  async findLottoFactor(pageOptionsDto: RepoRangeOptionsDto): Promise<DbLotteryFactor> {
+    const contribCounts = await this.pullRequestGithubEventsService.findAllPrAuthorCounts({
+      range: pageOptionsDto.range ?? 30,
+      prevDaysStartDate: pageOptionsDto.prevDaysStartDate ?? 0,
+      repoNames: pageOptionsDto.repos.split(","),
+    });
+
+    return calculateLottoFactor(contribCounts);
   }
 
   async findAllWithFilters(pageOptionsDto: RepoSearchOptionsDto): Promise<PageDto<DbRepo>> {

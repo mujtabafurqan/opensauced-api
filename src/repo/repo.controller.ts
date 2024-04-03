@@ -10,9 +10,10 @@ import { RepoDevstatsService } from "../timescale/repo-devstats.service";
 import { DbRepo } from "./entities/repo.entity";
 import { RepoService } from "./repo.service";
 import { RepoPageOptionsDto } from "./dtos/repo-page-options.dto";
-import { RepoSearchOptionsDto } from "./dtos/repo-search-options.dto";
+import { RepoRangeOptionsDto, RepoSearchOptionsDto } from "./dtos/repo-search-options.dto";
 import { DbRepoContributor } from "./entities/repo_contributors.entity";
 import { RepoReleaseDto } from "./dtos/repo-release.dto";
+import { DbLotteryFactor } from "./entities/lotto.entity";
 
 @Controller("repos")
 @ApiTags("Repository service")
@@ -46,6 +47,18 @@ export class RepoController {
   @Header("Cache-Control", "public, max-age=600")
   async findOneByOwnerAndRepo(@Param("owner") owner: string, @Param("repo") repo: string): Promise<DbRepo> {
     return this.repoService.tryFindRepoOrMakeStub({ repoOwner: owner, repoName: repo });
+  }
+
+  @Get("/lotto")
+  @ApiOperation({
+    operationId: "findLottoFactorByOwnerAndRepo",
+    summary: "Calcultes the lotto factor for a repo by :owner and :repo",
+  })
+  @ApiOkResponse({ type: DbLotteryFactor })
+  @ApiNotFoundResponse({ description: "Repository not found" })
+  @Header("Cache-Control", "public, max-age=600")
+  async findLottoFactorByOwnerAndRepo(@Query() pageOptionsDto: RepoRangeOptionsDto): Promise<DbLotteryFactor> {
+    return this.repoService.findLottoFactor(pageOptionsDto);
   }
 
   @Get("/:owner/:repo/contributors")
