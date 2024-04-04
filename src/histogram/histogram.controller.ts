@@ -42,6 +42,8 @@ import { GollumHistogramDto } from "./dtos/gollum.dto";
 import { MemberHistogramDto } from "./dtos/member.dto";
 import { PullRequestReviewCommentHistogramDto } from "./dtos/pull_request_review_comment.dto";
 import { CommitCommentsHistogramDto } from "./dtos/commit_comments.dto";
+import { DbContributorHistogram } from "./entities/contributors.entity";
+import { ContributorHistogramDto } from "./dtos/contributor.dto";
 
 @Controller("histogram")
 @ApiTags("Histogram generation service")
@@ -213,5 +215,15 @@ export class HistogramController {
   @ApiOkResponse({ type: DbMemberGitHubEventsHistogram, isArray: true })
   async memberHistogram(@Query() options: MemberHistogramDto): Promise<DbMemberGitHubEventsHistogram[]> {
     return this.memberGitHubEventsService.genMemberHistogram(options);
+  }
+
+  @Get("/contributors")
+  @ApiOperation({
+    operationId: "contributorsHistogram",
+    summary: "Generates a histogram of contributors based on 1 day time buckets",
+  })
+  @ApiOkResponse({ type: DbContributorHistogram, isArray: true })
+  async contributorsHistogram(@Query() options: ContributorHistogramDto): Promise<DbContributorHistogram[]> {
+    return this.pullRequestGitHubEventsService.genContributorsHistogram(options);
   }
 }
