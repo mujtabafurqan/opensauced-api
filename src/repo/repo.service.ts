@@ -223,9 +223,13 @@ export class RepoService {
   }
 
   async findLottoFactor(pageOptionsDto: RepoRangeOptionsDto): Promise<DbLotteryFactor> {
+    if (pageOptionsDto.repos.length === 0) {
+      return new DbLotteryFactor();
+    }
+
     const contribCounts = await this.pullRequestGithubEventsService.findAllPrAuthorCounts({
       range: pageOptionsDto.range ?? 30,
-      prevDaysStartDate: pageOptionsDto.prevDaysStartDate ?? 0,
+      prevDaysStartDate: pageOptionsDto.prev_days_start_date ?? 0,
       repoNames: pageOptionsDto.repos.split(","),
     });
 

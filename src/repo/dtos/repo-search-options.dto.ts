@@ -58,5 +58,5 @@ export class RepoRangeOptionsDto {
   @IsIn([0, 7, 30, 90])
   @IsInt()
   @IsOptional()
-  readonly prevDaysStartDate?: number = 0;
+  readonly prev_days_start_date?: number = 0;
 }
