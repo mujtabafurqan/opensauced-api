@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.18.0-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0...v2.18.0-beta.1) (2024-04-04)
+
+
+### 🍕 Features
+
+* Contributors histogram ([#703](https://github.com/open-sauced/api.opensauced.pizza/issues/703)) ([186aee6](https://github.com/open-sauced/api.opensauced.pizza/commit/186aee681c558946650575a0c7ed91f90901afac))
+* Implements returning releases for a given repo ([#707](https://github.com/open-sauced/api.opensauced.pizza/issues/707)) ([420a3cf](https://github.com/open-sauced/api.opensauced.pizza/commit/420a3cff890007d8af8a2a3d4ebcc84309b5146a))
 
 ## [2.17.0](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.16.0...v2.17.0) (2024-04-03)
 * Add v2/workspaces/:id/repo/prs endpoint for workspace repo PRs ([#692](https://github.com/open-sauced/api.opensauced.pizza/issues/692)) ([b634732](https://github.com/open-sauced/api.opensauced.pizza/commit/b634732b5744ec9c8dd58fac8ff86534c4e08d0e))
