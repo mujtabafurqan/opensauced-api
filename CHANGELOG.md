@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.17.0-beta.4](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0-beta.3...v2.17.0-beta.4) (2024-04-04)
+
+
+### 🍕 Features
+
+* Contributors histogram ([#703](https://github.com/open-sauced/api.opensauced.pizza/issues/703)) ([186aee6](https://github.com/open-sauced/api.opensauced.pizza/commit/186aee681c558946650575a0c7ed91f90901afac))
+
 ## [2.17.0-beta.3](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0-beta.2...v2.17.0-beta.3) (2024-04-03)
 
 
