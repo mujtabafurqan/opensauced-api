@@ -1,6 +1,8 @@
 import { BadRequestException, Inject, Injectable, NotFoundException, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, SelectQueryBuilder } from "typeorm";
+import { ContributorHistogramDto } from "../histogram/dtos/contributor.dto";
+import { DbContributorHistogram } from "../histogram/entities/contributors.entity";
 import { PullRequestHistogramDto } from "../histogram/dtos/pull_request.dto";
 import { FilterListContributorsDto } from "../user-lists/dtos/filter-contributors.dto";
 import { RepoService } from "../repo/repo.service";
@@ -577,6 +579,43 @@ export class PullRequestGithubEventsService {
       .orderBy("bucket", order);
 
     return queryBuilder.getRawMany<DbPullRequestGitHubEventsHistogram>();
+  }
+
+  async genContributorsHistogram(options: ContributorHistogramDto): Promise<DbContributorHistogram[]> {
+    if (!options.repo && !options.repoIds) {
+      throw new BadRequestException("must provide repo or repoIds");
+    }
+
+    const { range } = options;
+    const order = options.orderDirection ?? OrderDirectionEnum.DESC;
+    const startDate = GetPrevDateISOString(options.prev_days_start_date ?? 0);
+    const width = options.width ?? 1;
+
+    const queryBuilder = this.pullRequestGithubEventsRepository
+      .createQueryBuilder("pull_request_github_events")
+      .select(`time_bucket('${width} day', event_time)`, "bucket")
+      .addSelect(`count(distinct "pull_request_github_events"."pr_author_login")`, "contributor_count")
+      .where(`'${startDate}'::TIMESTAMP >= "pull_request_github_events"."event_time"`)
+      .andWhere(`'${startDate}'::TIMESTAMP - INTERVAL '${range} days' <= "pull_request_github_events"."event_time"`)
+      .andWhere(`"pull_request_github_events"."pr_action" = 'opened'`)
+      .groupBy("bucket")
+      .orderBy("bucket", order);
+
+    /* apply user provided repo name filters */
+    if (options.repo) {
+      queryBuilder.andWhere(`LOWER("pull_request_github_events"."repo_name") IN (:...repoNames)`, {
+        repoNames: options.repo.toLowerCase().split(","),
+      });
+    }
+
+    /* apply filters for consumer provided repo ids */
+    if (options.repoIds) {
+      queryBuilder.andWhere(`"pull_request_github_events"."repo_id" IN (:...repoIds)`, {
+        repoIds: options.repoIds.split(","),
+      });
+    }
+
+    return queryBuilder.getRawMany<DbContributorHistogram>();
   }
 
   async searchAuthors(pageOptionsDto: PullRequestContributorOptionsDto): Promise<PageDto<DbPullRequestContributor>> {
