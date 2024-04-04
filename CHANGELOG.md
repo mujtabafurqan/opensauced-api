@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.17.0-beta.5](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0-beta.4...v2.17.0-beta.5) (2024-04-04)
+
+
+### 🍕 Features
+
+* Implements returning releases for a given repo ([#707](https://github.com/open-sauced/api.opensauced.pizza/issues/707)) ([420a3cf](https://github.com/open-sauced/api.opensauced.pizza/commit/420a3cff890007d8af8a2a3d4ebcc84309b5146a))
+
 ## [2.17.0-beta.4](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0-beta.3...v2.17.0-beta.4) (2024-04-04)
 
 
