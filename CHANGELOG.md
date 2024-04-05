@@ -5,6 +5,13 @@
 
 > All notable changes to this project will be documented in this file
 
+### [2.18.1-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.18.0...v2.18.1-beta.1) (2024-04-05)
+
+
+### 🐛 Bug Fixes
+
+* Makes contrib insight patch work for list of contributors ([#714](https://github.com/open-sauced/api.opensauced.pizza/issues/714)) ([2b1872f](https://github.com/open-sauced/api.opensauced.pizza/commit/2b1872f14f9595904d323df40a53adab599dd940))
+
 ## [2.18.0](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.17.0...v2.18.0) (2024-04-04)
 
 
