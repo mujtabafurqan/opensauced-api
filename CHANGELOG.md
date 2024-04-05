@@ -5,6 +5,14 @@
 
 > All notable changes to this project will be documented in this file
 
+## [2.19.0-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.18.1-beta.1...v2.19.0-beta.1) (2024-04-05)
+
+
+### 🍕 Features
+
+* Add short circut for empty repos ([fd1da1c](https://github.com/open-sauced/api.opensauced.pizza/commit/fd1da1cb3ed68a2439d388731593651b5d799fb6))
+* Implements the lottery factor ([0f902c1](https://github.com/open-sauced/api.opensauced.pizza/commit/0f902c11a80c9944b65ec8de15b30a4b6b27d826))
+
 ### [2.18.1-beta.1](https://github.com/open-sauced/api.opensauced.pizza/compare/v2.18.0...v2.18.1-beta.1) (2024-04-05)
 
 
