@@ -25,11 +25,6 @@
   </a>
 </p>
 
-## 🚀 Live release environments
-
-- [api.opensauced.pizza](https://api.opensauced.pizza/)
-- [beta.api.opensauced.pizza](https://beta.api.opensauced.pizza/)
-
 ## 📖 Prerequisites
 
 In order to run the project we need the following software binaries installed on our development machines:
